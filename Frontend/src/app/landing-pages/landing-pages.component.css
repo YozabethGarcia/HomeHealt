@@ -1,0 +1,25 @@
+.banner-doctor {
+    background-image: url('../../assets/img/background-landing.svg');
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.title, .subtitle {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+.title {
+    color: #E63946;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: #9E9E9E;
+}
+
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    padding: 8px 15px;
+}

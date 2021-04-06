@@ -1,0 +1,246 @@
+<nav class="navbar navbar-expand-lg nave">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="margin: auto 20px auto 20px;" href="#"><img src="../assets/img/logo.png"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-weight:bold;">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
+                <li class="nav-item" style="text-align: center;">
+                    <a class="nav-link active" aria-current="page" href="#"><img src="../assets/img/home.png" style="margin-right: 10px;">Inicio</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
+                <li class="nav-item" style="text-align: center;">
+                    <a class="nav-link active" aria-current="page" href="#"><img src="../assets/img/Medical Doctor.png" style="margin-right: 10px;">Doctores</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
+                <li class="nav-item" style="text-align: center;">
+                    <a class="nav-link active" aria-current="page" href="#"><img src="../assets/img/Doctors Bag.png" style="margin-right: 10px;">Especialidades</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 " style="margin: auto 10px auto auto;">
+                <li class="nav-item" style="vertical-align:sub; text-align: center;">
+                    <img src="../assets/img/usuario.png">
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="card1 bg-dark text-white">
+    <img src="../assets/img/fotolanding.png" class="card-img" alt="...">
+    <div class="card-img-overlay">
+        <p class="card-text" style="font-weight: bold; font-size: 55px;">El mejor equipo de doctores de distintas áreas, listos para servirle.</p>
+    </div>
+</div>
+<div style="margin: 30px 40px 20px 40px; ">
+    <form class="container-fluid" style="display: inline-flex;">
+        <input type="text" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar">
+        <div class="dropdown" style="margin-left: 15px;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                Medicina General
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                <li><a class="dropdown-item active" href="#">Dermatología</a></li>
+                <li><a class="dropdown-item" href="#">Optometría</a></li>
+                <li><a class="dropdown-item" href="#">Neurocirugía</a></li>
+                <li><a class="dropdown-item" href="#">Psiquiatría</a></li>
+                <li><a class="dropdown-item" href="#">Radiología</a></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div  class="container-fluid">
+    <div class="row" *ngFor="let especialidad of especialidades;">
+        <div class="col-12 mt-4" style="color: #E63946; text-align: right;">
+            <h2>{{ especialidad.name }}</h2>
+            <hr>
+        </div>
+        <div class="col-12">
+            <div *ngIf="especialidad.doctors.length === 0" class="col-12">
+                <div class="row">
+                    <img class="mx-auto" width="80px" src="../../assets/img/person-delete-outline.png" alt="">
+                </div>
+                <div class="row">
+                    <h6 class="mx-auto">Aun no disponemos de profesioanles en esta especialidad.</h6>
+                </div>
+            </div>
+            <div *ngIf="especialidad.doctors.length !== 0" class="row g-4" style="margin: 50px 50px 20px 50px;">
+                <span *ngFor="let medico of especialidad.doctors;">
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="{{ medico.urlFoto }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ medico.nombre }}</h5>
+                                <p class="card-text">{{ medico.ciudad }}, {{ medico.departamento }}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <button type="button" class="btn btn-link" style="color: #E63946;" (click)="showMore(doctor , medico.id)">Ver mas</button>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align: center; margin: 50px 40px 20px 40px; ">
+    <button type="button" class="btn btn-link" style="color: #E63946; font-weight: bolder;">Mostrar +</button>
+    <hr>
+</div>
+<div style="margin: 30px 40px 20px 40px; ">
+    <form class="container-fluid" style="display: inline-flex;">
+        <input type="text" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar">
+        <div class="dropdown" style="margin-left: 15px;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                Especialidades
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                <li><a class="dropdown-item active" href="#">Dermatología</a></li>
+                <li><a class="dropdown-item" href="#">Optometría</a></li>
+                <li><a class="dropdown-item" href="#">Neurocirugía</a></li>
+                <li><a class="dropdown-item" href="#">Psiquiatría</a></li>
+                <li><a class="dropdown-item" href="#">Radiología</a></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div style="text-align: left; margin: 50px 40px 20px 40px; ">
+    <h5 type="button" style="color: #E63946; font-weight: bolder;">Click sobre la imagen para saber mas</h5>
+</div>
+<div class="row row-cols-1 row-cols-md-4 g-4" style="margin: 50px 50px 20px 50px; ">
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 2.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 21.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 22.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 23.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 24.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 25.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 26.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 27.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 28.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 29.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 210.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 211.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 212.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 213.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 214.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn">
+            <img src="../assets/img/Icon Especialidades/Slice 215.png" class="card-img-top" alt="...">
+        </button>
+    </div>
+</div>
+
+
+<ng-template #doctor let-modal>
+    <div class="modal-header">
+        <h6 class="modal-title title">Informacion del medico</h6>
+        <button class="close" type="button" aria-label="close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+       <div class="container-fluid">
+           <div class="row">
+               <div class="col-12 text-center">
+                   <img width="100px" class="mx-auto rounded-circle" src="{{ currentDoctor.urlFoto }}" alt="">
+               </div>
+               <div class="col-12 text-center">
+                    <label class="title">Titulo:</label>
+                    <label class="subtitle">&nbsp; {{ currentDoctor.titulo }} </label>
+               </div>
+               <div class="col-12 text-center">
+                    <label class="title">Especialidad:</label>
+                    <label class="subtitle">&nbsp; {{ currentDoctor.especialidad }} </label>
+               </div>
+               <div class="col-12 text-center">
+                    <label class="title">Direccion:</label>
+                    <label class="subtitle">&nbsp; {{ currentDoctor.direccion }} </label>
+               </div>
+               <div class="col-12 text-center">
+                    <label class="title">Lugar de atencion:</label>
+                    <label class="subtitle">&nbsp; {{ currentDoctor.lugaresAtencion }} </label>
+               </div>
+               <div class="col-12 text-center">
+                   <label class="title">Contactos:</label>
+               </div>
+               <div class="col-12 text-center">
+                   <span class="mx-2"><img width="20px" src="../../assets/img/facebook.svg" alt=""></span>
+                   <span class="mx-2"><img width="20px" src="../../assets/img/whatsapp.svg" alt=""></span>
+                   <span class="mx-2"><img width="20px" src="../../assets/img/instagram.svg" alt=""></span>
+               </div>
+               <div class="col-12 text-center">
+                    <span class="mx-2 my-2"><img width="20px" src="../../assets/img/hearth.svg" alt=""></span>
+               </div>
+               <div class="col-12">
+                    <label class="title">Bibliografia </label>
+               </div>
+               <div class="col-12">
+                    <label class="subtitle">{{ currentDoctor.bibliografia }} </label>
+               </div>
+           </div>
+       </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn btn-light rounded-pill" (click)="modal.dismiss()">Cerrar</button>
+    </div>
+</ng-template>

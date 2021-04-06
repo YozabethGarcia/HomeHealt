@@ -1,0 +1,81 @@
+.container-fluid {
+    background-color: #e63946;
+}
+
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    padding: 8px 15px;
+    color: black;
+}
+
+.icon-box {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+  
+.icon-box input[type='file'] {
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:2;
+    cursor:pointer;
+    opacity: 0;
+}
+
+.icon-box .select-icon {
+    position:absolute;
+    left:0;
+    bottom:0;
+    width: 100%;
+    color:gray;
+    z-index:1;
+    padding:4px;
+}
+
+.photo-file-selector {
+    background-color:transparent;
+    width: 100%;
+    height: 100%;
+    float:right;
+    color:#ccd4e1;
+    cursor:pointer;
+    position:relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.photo-container {
+    height: 190px;
+    width: 100%;
+    background-color: #f8f9fc;
+    border: 1px solid #edf1f7;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center center;
+}
+
+.profilepic-container {
+    width: 150px;
+    height: 150px;
+    border: 4px solid #959595;
+    transition: border-color 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center center;
+    background-color: #fff;
+}
+
+.default-button {
+    height: 200px;
+    width: 100%;
+    text-align: center;
+    padding: 76px;
+    color: white;
+    font-family: 'Montserrat';
+    font-size: 2rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
