@@ -11,7 +11,7 @@ const routes: Routes = [
     component: LandingPagesComponent,
   },
   {
-    path:'home',
+    path: 'home',
     component: HomeComponent,
   },
   {
@@ -21,6 +21,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: ''
   },
 ];
 

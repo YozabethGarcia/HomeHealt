@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div class="container-fluid" style="padding: 8.9% 35%;">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Iniciar Sesión</h5>
+            <form [formGroup]="Usuario">
+                <div class="col-12 my-2">
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <input type="text" class="form-control" formControlName="correoCliente" name="" id="" placeholder="Correo">
+                            <small *ngIf="CorreoNoValido" class="text-danger">Valor invalido o Vacío</small>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <input type="text" class="form-control" formControlName="passwordCliente" name="" id="" placeholder="Contraseña">
+                            <small *ngIf="PassNoValido" class="text-danger">Ingrese al menos 7 caracteres </small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-12">
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" style="color: white;" (click)="InicioSesion()">Iniciar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
