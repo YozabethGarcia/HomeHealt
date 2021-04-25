@@ -62,4 +62,8 @@ export class HomeComponent implements OnInit {
     console.log( this.currentDoctor );
     this.modal.open( modal );
   }
+
+  scrollTo( $event: String ) {
+    document.getElementById( `${$event}` ).scrollIntoView();
+  }
 }

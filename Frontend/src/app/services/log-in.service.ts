@@ -9,10 +9,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LogInService {
-
-  private url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
-  private apikey = 'AIzaSyBjG__RB2oT5BrmshUWQtOFfbb4BzoDeZI';
-
   userToken: string;
 
   constructor(private firestore: AngularFirestore,
@@ -21,24 +17,22 @@ export class LogInService {
 
   }
 
-  LogIn( email: string , password: string ){
-
-    const authData = {
-      Email: email,
-      Password: password,
-      returnSecureToken: true
-    };
-
-    return this.http.post(
-      `${ this.url }/verifyPassword?key=${ this.apikey }`,
-      authData
-    ).pipe(
-      map( resp => {
-        this.guardarToken( resp['idToken'] );
-        return resp;
-      })
-    );
-  };
+  LogIn( email: string , password: string ): Promise<any> {
+    return new Promise( (resolve, reject) => {
+  
+      this.fireAuth.signInWithEmailAndPassword( email, password ).then( ( user ) => {
+        user.user.getIdToken().then( ( token ) => {
+          this.firestore.collection('cliente').doc( user.user.uid ).get().subscribe(( user: any ) => {
+            const localStorage = window.localStorage;
+            const image =  user.data().image;
+            localStorage.setItem('image', image);
+          }); 
+          this.guardarToken( token );
+          resolve( user );
+        })
+      });
+    });
+  }
 
 
 
@@ -79,6 +73,11 @@ export class LogInService {
     } else {
       return false;
     }
+  }
+
+  async logout(): Promise<any> {
+    await localStorage.clear();
+    return this.fireAuth.signOut();
   }
 
 }

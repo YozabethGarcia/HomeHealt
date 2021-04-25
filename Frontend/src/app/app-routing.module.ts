@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'home-healt',
     component: LandingPagesComponent,
   },
   {
@@ -21,6 +21,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home-healt'
   },
   {
     path: '**',

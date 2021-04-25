@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthUserService } from '../services/auth-user.service';
 import { UploadFileService } from '../services/upload-file.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 interface Picture {
   name?: string;
@@ -57,7 +59,8 @@ export class RegisterUserComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private authService: AuthUserService,
                 private uploadFile: UploadFileService,
-                private toastr: ToastrService ) { }
+                private toastr: ToastrService,
+                private router: Router ) { }
 
   get id() { return this.medicFormData.get('id'); }
   get nombre() { return this.medicFormData.get('nombre'); }
@@ -196,11 +199,36 @@ export class RegisterUserComponent implements OnInit {
 
   saveClient() {
     if ( this.clientFormData.valid ) {
-      this.authService.signUp( this.correoCliente.value , this.passwordCliente.value ).then( res => {
+      Swal.fire({
+        allowOutsideClick: false,
+        icon: 'info',
+        text: 'Espere por favor...'
+      });
+      Swal.showLoading();
+      this.authService.signUp( this.correoCliente.value , this.passwordCliente.value ).then( ( res ) => {
         this.uploadFile.uploadFile( this.picture.file, this.idCliente.value + '/' + this.picture.name ).then( async ( profile ) => {
           this.clientFormData['urlFoto'] = profile.url;
-          this.authService.saveUserClient( this.clientFormData.value ).then( saved => {
-            console.log( 'Guardado' );
+          const localStorage = window.localStorage;
+          localStorage.setItem('image', profile.url);
+          this.authService.saveUserClient( res.uid, this.clientFormData.value,  profile.url ).then( saved => {
+            Swal.update({
+              allowOutsideClick: false,
+              icon: 'success',
+              text: 'Bienvenido a Home Health'
+            });
+            setInterval( () => { 
+              Swal.close();
+              this.router.navigate(['home']);
+             }, 1000 )
+          }).catch( ( error ) => {
+            Swal.update({
+              allowOutsideClick: false,
+              icon: 'error',
+              text: 'Ha ocurrido un error, intentalo nuevamente.'
+            });
+            setInterval( () => { 
+              Swal.close();
+             }, 1000 )
           });
         });   
       });

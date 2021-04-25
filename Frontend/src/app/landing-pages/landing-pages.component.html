@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-7 banner-doctor"></div>
-        <div class="col-5" style="padding: 15% 5%;">
+        <div class="col-5" *ngIf="!logginState" style="padding: 10% 5%;">
             <div class="row">
                 <div class="col-12">
                     <h3 class="title">Home Health</h3>
@@ -14,10 +14,10 @@
                 <div class="col-12 mt-5">
                     <div class="row">
                         <div class="col-6 text-right">
-                            <button type="button" class="btn btn-danger rounded-pill" [routerLink]="['login']">Iniciar sesion</button>
+                            <button type="button" class="btn btn-danger rounded-pill" (click)="changeLogginState()">Iniciar sesion</button>
                         </div>
                         <div class="col-6 text-left">
-                            <button type="button" class="btn btn-light rounded-pill" [routerLink]="['sign-up']" style="color: #9E9E9E;">Crear una cuenta</button>
+                            <button type="button" class="btn btn-light rounded-pill" [routerLink]="['/sign-up']" style="color: #9E9E9E;">Crear una cuenta</button>
                         </div>
                     </div>
                 </div>
@@ -39,6 +39,33 @@
                     <div class="row">
                         <div class="col-12 text-center">
                             <label class="subtitle" style="font-size: 0.6rem;"> Redes Sociales </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5" *ngIf="logginState" style="padding-top: 18%;">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Iniciar Sesión</h5>
+                    <form [formGroup]="Usuario">
+                        <div class="col-12 my-2">
+                            <div class="row">
+                                <div class="col-12 mt-2">
+                                    <input type="text" class="form-control" formControlName="correoCliente" name="" id="" placeholder="Correo">
+                                    <small *ngIf="CorreoNoValido" class="text-danger">Valor invalido o Vacío</small>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <input type="password" class="form-control" formControlName="passwordCliente" name="" id="" placeholder="Contraseña">
+                                    <small *ngIf="PassNoValido" class="text-danger">Ingrese al menos 7 caracteres </small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-12">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-light" (click)="changeLogginState()">Cancelar</button>
+                            <button type="button" class="btn btn-danger" style="color: white;" (click)="InicioSesion()">Iniciar Sesión</button>
                         </div>
                     </div>
                 </div>

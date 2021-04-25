@@ -1,11 +1,11 @@
-<app-navbar></app-navbar>
-<div class="card1 bg-dark text-white">
+<app-navbar (scroll)="scrollTo($event)"></app-navbar>
+<div class="card1 bg-dark text-white" id="home">
     <img src="../assets/img/fotolanding.png" class="card-img" alt="...">
     <div class="card-img-overlay">
         <p class="card-text" style="font-weight: bold; font-size: 55px;">El mejor equipo de doctores de distintas áreas, listos para servirle.</p>
     </div>
 </div>
-<div style="margin: 30px 40px 20px 40px; ">
+<div style="margin: 30px 40px 20px 40px; " id="doctores">
     <form class="container-fluid" style="display: inline-flex;">
         <input type="text" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar">
         <div class="dropdown" style="margin-left: 15px;">
@@ -22,7 +22,7 @@
         </div>
     </form>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" id="especialidad">
     <div class="row" *ngFor="let especialidad of especialidades;">
         <div class="col-12 mt-4" style="color: #E63946; text-align: right;">
             <h2>{{ especialidad.name }}</h2>

@@ -41,10 +41,9 @@ export class AuthUserService {
     });
   }
 
-  saveUserClient( user ): Promise <any> {
+  saveUserClient( id , user, image ): Promise <any> {
     return new Promise( (resolve, rejects) => {
-      const id: string = user.idCliente;
-      delete user['id'];
+      user.image = image;
       this.firestore.collection('cliente').doc( id ).set(user);
       resolve( 'Guardado' );
     });
