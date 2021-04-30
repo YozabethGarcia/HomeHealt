@@ -200,6 +200,12 @@
                     <span class="mx-2"><img width="20px" src="../../assets/img/instagram.svg" alt=""></span>
                 </div>
                 <div class="col-12 text-center">
+                    <label class="title">ó</label>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-danger rounded-pill" style="color:white; " (click)="appointment(FormCita , currentDoctor.id)">Agendar Cita</button>
+                </div>
+                <div class="col-12 text-center">
                     <span class="mx-2 my-2"><img width="20px" src="../../assets/img/hearth.svg" alt=""></span>
                 </div>
                 <div class="col-12">
@@ -213,5 +219,28 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn btn-light rounded-pill" (click)="modal.dismiss()">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #FormCita let-modal>
+    <div class="modal-header">
+        <h6 class="modal-title title">Agendar Cita</h6>
+        <button class="close" type="button" aria-label="close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="Cita">
+            <div class="form-group">
+                <label for="InputFecha">Fecha</label>
+                <input type="date" class="form-control" id="InputFecha" formControlName="fecha" aria-describedby="fechaHelp" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="InputHora">Hora</label>
+                <input type="time" class="form-control" id="InputHora" formControlName="hora" aria-describedby="HoraHelp" placeholder="">
+            </div>
+            <button type="submit" class="btn btn-danger rounded-pill" style="width: 100%;" (click)="AgendarCita()">Agendar</button>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-light rounded-pill" (click)="modal.dismiss()">Cerrar</button>
     </div>
 </ng-template>

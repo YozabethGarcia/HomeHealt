@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
+import { Time } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +20,14 @@ export class LogInService {
 
   LogIn( email: string , password: string ): Promise<any> {
     return new Promise( (resolve, reject) => {
-  
+
       this.fireAuth.signInWithEmailAndPassword( email, password ).then( ( user ) => {
         user.user.getIdToken().then( ( token ) => {
           this.firestore.collection('cliente').doc( user.user.uid ).get().subscribe(( user: any ) => {
             const localStorage = window.localStorage;
             const image =  user.data().image;
             localStorage.setItem('image', image);
-          }); 
+          });
           this.guardarToken( token );
           resolve( user );
         })
@@ -80,4 +81,16 @@ export class LogInService {
     return this.fireAuth.signOut();
   }
 
+  AgregarCita( idDoctor: string, idCliente: string, fecha: Date , hora: Time){
+
+    const data = {
+      IdDoctor: idDoctor,
+      IdCliente : idCliente,
+      Fecha: fecha,
+      Hora: hora
+    };
+
+    this.firestore.collection('Cita').add(data);
+
+  }
 }
