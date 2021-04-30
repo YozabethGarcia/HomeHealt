@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FilterDoctorPipe } from './pipes/filter-doctor.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     LandingPagesComponent,
     RegisterUserComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    FilterDoctorPipe
   ],
   imports: [
     BrowserModule,

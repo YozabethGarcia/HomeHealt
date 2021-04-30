@@ -22,8 +22,7 @@ interface Picture {
 })
 export class RegisterUserComponent implements OnInit {
   medicForm: boolean = false;
-  clientForm: boolean = false;
-  select: boolean = true;
+  clientForm: boolean = false
   picture: Picture = { safeUrl: null };
   countrys: any = [];
   provinces: any = [];
@@ -33,12 +32,12 @@ export class RegisterUserComponent implements OnInit {
     id: ['0871-5475-36547', Validators.required],
     nombre: ['Miguel Alvarez', Validators.required],
     pais: ['1', Validators.required],
-    departamento: ['2', Validators.required],
-    ciudad: ['3', Validators.required],
-    bibliografia: ['asjkjassssssssssshkashkahabmasbms ashkhsjkhakjhsa kjsa hsajk ', Validators.required],
+    departamento: ['8', Validators.required],
+    ciudad: ['1', Validators.required],
+    bibliografia: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis facilisis magna et tincidunt. Sed viverra metus sit amet sem rutrum maximus. Ut condimentum neque arcu, eget pulvinar sem efficitur at.', Validators.required],
     especialidad: ['Medicina General', Validators.required],
-    direccion: ['saaaakljwla awklaaaaaaaaaaaaaaaa waiwiaooa', Validators.required],
-    lugaresAtencion: ['assssssssss wwwwwwwwwasdsaaaaaaa', Validators.required],
+    direccion: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis facilisis magna et tincidunt. Sed viverra metus sit amet sem rutrum maximus.', Validators.required],
+    lugaresAtencion: ['Ut condimentum neque arcu, eget pulvinar sem efficitur at. ', Validators.required],
     facebook: [''],
     instagram: [''],
     whatsapp: [''],
@@ -53,6 +52,7 @@ export class RegisterUserComponent implements OnInit {
     correoCliente: ['', Validators.required],
     passwordCliente: ['', Validators.required ], 
   });
+  cancelButton: boolean = true;
 
   constructor(  private sanitizer: DomSanitizer, 
                 private location: LocationsService,
@@ -87,19 +87,21 @@ export class RegisterUserComponent implements OnInit {
   ngOnInit(): void {
     this.location.getCountrys().subscribe( country => {
       this.countrys = country;
+      this.getProvinces();
+      this.getCitys();
     });
   }
 
   clientBottom(){
     this.medicForm = false;
-    this.select = false;
     this.clientForm = true;
+    this.cancelButton = false;
   }
 
   medicBottom(){
     this.medicForm = true;
     this.clientForm = false;
-    this.select = false;
+    this.cancelButton = false;
   }
 
   selectPicture(event) {
@@ -156,9 +158,16 @@ export class RegisterUserComponent implements OnInit {
 
   saveDoctor() {
     if ( this.medicFormData.valid ) {
+      Swal.fire({
+        allowOutsideClick: false,
+        icon: 'info',
+        text: 'Espere por favor...'
+      });
+      Swal.showLoading();
       this.authService.signUp( this.correo.value , this.password.value ).then( res => {
         this.uploadFile.uploadFile( this.picture.file, this.id.value + '/' + this.picture.name ).then( async ( profile ) => {
-          this.medicFormData['urlFoto'] = profile.url;
+          const localStorage = window.localStorage;
+          localStorage.setItem('image', profile.url);
           const titlesMedic = [];
           await Promise.all(this.titles.map( async file => {
             await this.uploadFile.uploadFile( file.file, this.id.value + '/' + file.name).then( ( newTitle ) => {
@@ -166,15 +175,69 @@ export class RegisterUserComponent implements OnInit {
             });
           }));
           this.medicFormData['titlesMedics'] = titlesMedic;
-          this.addSocial();
-          this.authService.saveUser( this.medicFormData.value ).then( saved => {
-            console.log( 'Guardado' );
-            this.toastr.success('Su informacion sera verificada para comenzar a operar!', 'Bienvenido a Home health');
+
+          let user = this.medicFormData.value;
+          
+          this.countrys.forEach(element => {
+            console.log( element.idPais, parseInt(this.pais.value) );
+            if ( element.idPais === parseInt(this.pais.value) ) {
+              user.pais = element.pais;
+            }
+          });
+          this.provinces.forEach(element => {
+            if ( element.idDepartamento === parseInt(this.departamento.value) ) {
+              user.departamento = element.departamento;
+            }
+          });
+          this.citys.forEach(element => {
+            if ( element.idCiudad === parseInt(this.ciudad.value) ) {
+              user.ciudad = element.nombreciudad;
+            }
+          });
+          this.authService.saveUser( user , res.uid, profile.url ).then( saved => {
+            Swal.hideLoading();
+            Swal.update({
+              allowOutsideClick: false,
+              icon: 'success',
+              text: 'Bienvenido a Home Health, Su informacion sera verificada para comenzar a operar!',
+              showConfirmButton: false,
+            });
+            setInterval( () => { 
+              Swal.close();
+              this.router.navigate(['home']);
+             }, 3000 )
+             this.medicFormData.reset();
+          }).catch( ( error ) => {
+              Swal.hideLoading();
+              Swal.update({
+                allowOutsideClick: true,
+                icon: 'error',
+                text: 'Ha ocurrido un error, intentalo nuevamente.'
+              });
+          });
+        }).catch( (error) => {
+          Swal.hideLoading();
+          Swal.update({
+            allowOutsideClick: true,
+            icon: 'error',
+            text: 'Ha ocurrido un error, intentalo nuevamente.'
           });
         });   
+      }).catch( ( error ) => {
+        const message = ( error.error.code === 'auth/email-already-in-use') ? 'Este correo ya se encuentra en uso.' : 'Ha ocurrido un error, intentalo nuevamente.';
+        Swal.hideLoading();
+        Swal.update({
+              allowOutsideClick: true,
+              icon: 'error',
+              text: message
+            });
       });
     } else {
-            console.log( 'Debe llenar algunos campos' );
+      Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          text: 'Algunos campos son obligatorias.'
+        });
     }
   }
 
@@ -194,7 +257,9 @@ export class RegisterUserComponent implements OnInit {
   cancel() {
     this.medicForm = false;
     this.clientForm = false;
-    this.select = true;
+    this.cancelButton = true;
+    this.clientFormData.reset();
+    this.medicFormData.reset();
   }
 
   saveClient() {
@@ -211,6 +276,7 @@ export class RegisterUserComponent implements OnInit {
           const localStorage = window.localStorage;
           localStorage.setItem('image', profile.url);
           this.authService.saveUserClient( res.uid, this.clientFormData.value,  profile.url ).then( saved => {
+            Swal.hideLoading();
             Swal.update({
               allowOutsideClick: false,
               icon: 'success',
@@ -220,20 +286,32 @@ export class RegisterUserComponent implements OnInit {
               Swal.close();
               this.router.navigate(['home']);
              }, 1000 )
+             this.clientFormData.reset();
           }).catch( ( error ) => {
+            Swal.hideLoading();
             Swal.update({
-              allowOutsideClick: false,
+              allowOutsideClick: true,
               icon: 'error',
               text: 'Ha ocurrido un error, intentalo nuevamente.'
             });
-            setInterval( () => { 
-              Swal.close();
-             }, 1000 )
           });
         });   
+      }).catch( ( error ) => {
+        const message = ( error.error.code === 'auth/email-already-in-use') ? 'Este correo ya se encuentra en uso.' : 'Ha ocurrido un error, intentalo nuevamente.';
+        Swal.hideLoading();
+        Swal.update({
+              allowOutsideClick: true,
+              icon: 'error',
+              text: message
+            });
       });
     } else {
-      console.log( 'Formulario Invalido' );
+      Swal.hideLoading();
+      Swal.update({
+            allowOutsideClick: true,
+            icon: 'error',
+            text: 'Por favor asegurese de llenar todos los campos.'
+          });
     }
   }
 }
