@@ -23,6 +23,8 @@ export class LogInService {
 
       this.fireAuth.signInWithEmailAndPassword( email, password ).then( ( user ) => {
         user.user.getIdToken().then( ( token ) => {
+          const uid = user.user.uid;
+          localStorage.setItem('uid', uid);
           this.firestore.collection('cliente').doc( user.user.uid ).get().subscribe(( user: any ) => {
             const localStorage = window.localStorage;
             const image =  user.data().image;

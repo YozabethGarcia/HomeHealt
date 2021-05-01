@@ -17,8 +17,8 @@ export class CalendarioComponent implements OnInit {
 
   ngOnInit(): void {
     const localstorage = window.localStorage;
-    if (localstorage.getItem('token')) {
-      const uid = JSON.parse(localstorage.getItem('token'))[0].uid;
+    if (localstorage.getItem('uid')) {
+      const uid = localstorage.getItem('uid');
       this.AuthUserServ.getAllCitas(uid).then((Citas) => {
         console.log(Citas);
       });

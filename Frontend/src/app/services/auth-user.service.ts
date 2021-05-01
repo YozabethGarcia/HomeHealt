@@ -9,8 +9,6 @@ import { HOST_ATTR } from '@angular/compiler';
   providedIn: 'root'
 })
 export class AuthUserService {
-  localStorage = window.localStorage;
-
   constructor( private firestore: AngularFirestore,
                private fireAuth: AngularFireAuth, ) {
     this.idClient();
@@ -18,6 +16,7 @@ export class AuthUserService {
 
   signUp( email: string , password: string ): Promise <any> {
     return new Promise ( ( resolve, reject ) => {
+      const localStorage = window.localStorage;
       this.fireAuth.createUserWithEmailAndPassword( email , password ).then( add => {
         add.user.getIdToken().then( token => {
           const user = [{
@@ -112,10 +111,9 @@ export class AuthUserService {
 
   idClient(): Promise <any> {
     return new Promise( (resolve, rejects) => {
-      localStorage = window.localStorage;
-      if (localStorage.getItem('token'))
+      if (localStorage.getItem('uid'))
       {
-        const uid = JSON.parse(localStorage.getItem('token'))[0].uid;
+        const uid = localStorage.getItem('uid');
         resolve(uid);
       }
     });
@@ -123,14 +121,14 @@ export class AuthUserService {
 
   getAllCitas(idUser): Promise <any> {
     return new Promise( ( resolve, rejects ) => {
-      this.firestore.collection('cita', (ref) => {
+      this.firestore.collection('Cita', (ref) => {
         let query: any = ref;
-        query = query.where('IdCliente' , '==', idUser );
+        query = query.where( 'IdCliente' , '===', idUser.trim() );
         return query;
       }).snapshotChanges().pipe(
-        map((ref) => {
+        map( (res) => {
           const CitasList = [];
-          ref.forEach( doc => {
+          res.forEach( doc => {
             const cita: any = doc.payload.doc.data();
             CitasList.push(
               {
@@ -142,7 +140,6 @@ export class AuthUserService {
               }
             );
           });
-          console.log(CitasList);
           resolve({ cita: CitasList});
         })
       );
