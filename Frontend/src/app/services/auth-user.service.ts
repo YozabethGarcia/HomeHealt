@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Time } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthUserService {
   localStorage = window.localStorage;
-  
+
   constructor( private firestore: AngularFirestore,
                private fireAuth: AngularFireAuth, ) { 
+    this.idClient();
   }
 
   signUp( email: string , password: string ): Promise <any> {
@@ -28,6 +30,7 @@ export class AuthUserService {
          if ( localStorage.getItem('token') ) {
           const uid = JSON.parse( localStorage.getItem('token') )[0].uid;
          }
+        
         resolve( { uid: add.user.uid });
       }).catch( ( error ) => {
         reject( { error: error } );
@@ -89,6 +92,32 @@ export class AuthUserService {
         });
         resolve(  {doctors: doctorsList } );
       });
-    });    
+    });
+  }
+
+  AgregarCita( idDoctor: string, idCliente: string, fecha: Date , hora: Time): Promise <any> {
+    return new Promise( (resolve, rejects) => {
+    const data = {
+      IdDoctor: idDoctor,
+      IdCliente : idCliente,
+      Fecha: fecha,
+      Hora: hora
+    };
+    //this.firestore.collection('Cita').add(data);
+    resolve( 'Guardado' );
+    });
+  }
+
+  idClient(): Promise <any> {
+    return new Promise( (resolve, rejects) => {
+      localStorage = window.localStorage;
+      if (localStorage.getItem('token'))
+      {
+        const uid = JSON.parse(localStorage.getItem('token'))[0].uid;
+        resolve(uid);
+      }
+    });
   }
 }
+
+
