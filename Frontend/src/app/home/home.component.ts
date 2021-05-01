@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthUserService } from '../services/auth-user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarOptions } from '@fullcalendar/angular';
 import { DatePipe } from '@angular/common';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
@@ -95,7 +94,7 @@ export class HomeComponent implements OnInit {
     this.IdDoctor = id;
   }
 
-  scrollTo( $event: String ) {
+  scrollTo( $event: string ) {
     document.getElementById( `${$event}` ).scrollIntoView();
   }
 

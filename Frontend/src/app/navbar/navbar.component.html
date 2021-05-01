@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-weight:bold;">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
                 <li class="nav-item" style="text-align: center;">
-                    <a class="nav-link active" aria-current="page" href="javascript: void(0);" (click)="scrollTo('home')"><img src="../assets/img/home.png" style="margin-right: 10px;">Inicio</a>
+                    <a class="nav-link active" aria-current="page" href="javascript: void(0);" (click)="scrollTo('home')" routerLink='/home'><img src="../assets/img/home.png" style="margin-right: 10px;">Inicio</a>
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
@@ -20,10 +20,15 @@
                     <a class="nav-link active" aria-current="page" href="javascript: void(0);" (click)="scrollTo('especialidad')"><img src="../assets/img/Doctors Bag.png" style="margin-right: 10px;">Especialidades</a>
                 </li>
             </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: auto 10px;">
+                <li class="nav-item" style="text-align: center;">
+                    <a class="nav-link active" aria-current="page" routerLink='/calendar'><img src="../assets/img/calendario.png" style="margin-right: 10px; width: 26px;">Calendario</a>
+                </li>
+            </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 " style="margin: auto 10px auto auto;">
                 <li class="nav-item" style="vertical-align:sub; text-align: center;">
                     <img src="{{ image }}" class="rounded-circle" width="50px">
-                    <span class="mx-2" style="color: #007bff; cursor: pointer;" (click)="logoutUser()" >Cerrar sesion</span>
+                    <span class="mx-2" style="color: #007bff; cursor: pointer;" (click)="logoutUser()">Cerrar sesion</span>
                 </li>
             </ul>
         </div>

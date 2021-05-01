@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Time } from '@angular/common';
+import { map } from 'rxjs/operators';
+import { HOST_ATTR } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class AuthUserService {
   localStorage = window.localStorage;
 
   constructor( private firestore: AngularFirestore,
-               private fireAuth: AngularFireAuth, ) { 
+               private fireAuth: AngularFireAuth, ) {
     this.idClient();
   }
 
@@ -101,6 +103,34 @@ export class AuthUserService {
         const uid = JSON.parse(localStorage.getItem('token'))[0].uid;
         resolve(uid);
       }
+    });
+  }
+
+  getAllCitas(idUser): Promise <any> {
+    return new Promise( ( resolve, rejects ) => {
+      this.firestore.collection('cita', (ref) => {
+        let query: any = ref;
+        query = query.where('IdCliente' , '==', idUser );
+        return query;
+      }).snapshotChanges().pipe(
+        map((ref) => {
+          const CitasList = [];
+          ref.forEach( doc => {
+            const cita: any = doc.payload.doc.data();
+            CitasList.push(
+              {
+                idCliente: cita.IdCliente,
+                idDoctor: cita.IdDoctor,
+                fecha: cita.Fecha,
+                hora: cita.Hora,
+                titulo: cita.Titulo
+              }
+            );
+          });
+          console.log(CitasList);
+          resolve({ cita: CitasList});
+        })
+      );
     });
   }
 }

@@ -14,6 +14,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DatePipe } from '@angular/common';
+import { CalendarioComponent } from './calendario/calendario.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+]);
 
 @NgModule({
   declarations: [
@@ -22,7 +29,8 @@ import { DatePipe } from '@angular/common';
     LandingPagesComponent,
     RegisterUserComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    CalendarioComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +41,7 @@ import { DatePipe } from '@angular/common';
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    FullCalendarModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
