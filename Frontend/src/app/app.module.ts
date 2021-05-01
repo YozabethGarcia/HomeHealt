@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FilterDoctorPipe } from './pipes/filter-doctor.pipe';
 import { DatePipe } from '@angular/common';
 
 @NgModule({
@@ -22,7 +23,8 @@ import { DatePipe } from '@angular/common';
     LandingPagesComponent,
     RegisterUserComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    FilterDoctorPipe
   ],
   imports: [
     BrowserModule,

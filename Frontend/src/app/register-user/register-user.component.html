@@ -1,172 +1,183 @@
-<div *ngIf="select" class="container-fluid" style="padding: 22.7% 5%;">
+<div class="container-fluid">
+    <div class="row  back-btn" *ngIf=" cancelButton ">
+        <button type="button" class="btn btn-light rounded-pill" [routerLink]="['/home-healt']" routerLinkActive="router-link-active" >Cancelar</button><br>
+    </div>
     <div class="row">
-        <div class="col-12 text-center">
-            <h4 style="color: white;">Bienvenido a Home health, desea registrarse como: </h4>
+       <div *ngIf="!medicForm" class="col-6 text-center heigth-background"  style="background-image: url('../../assets/img/999467409b18f3937bbb81f92be27dee.jpg');">
+            <div class="black-background">
+                <button  *ngIf="!clientForm" type="button" class="btn btn-danger rounded-pill" (click)="clientBottom()">Cliente de Home Health</button><br>
+                <small *ngIf="!clientForm" class="text-muted" style="color: #fff !important; font-size: 0.89rem;">Registrate como cliente para poder visualizar el directorio de medicos del cual dispone Home health, asi como tambien podras consumir servicios para poder agendar tu cita con los medicos.</small>
+            </div>
+       </div>
+       <div *ngIf="medicForm" class="col-12" style="background-image: url('../../assets/img/depositphotos_111543660-stock-illustration-memphis-line-seamless-pattern-colorful.jpg');">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Registro Medicos</h5>
+              <form [formGroup]="medicFormData">
+                <div class="col-12 my-3">
+                    <div class="icon-box ml-auto mr-auto" style="position: relative;">
+                        <div class="rounded-circle profilepic-container" *ngIf="picture.safeUrl" [style.background-image]="picture.safeUrl"></div>
+                        <div class="rounded-circle profilepic-container" *ngIf="!picture.safeUrl" style="background-image: url('../../assets/img/unnamed.png');"></div>
+                        <input type="file" (change)="selectPicture($event)">
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                          <div class="col-6">
+                              <input type="text" class="form-control" formControlName="id" name="" id="" placeholder="Identificacion">
+                          </div>
+                          <div class="col-6">
+                            <input type="text" class="form-control" formControlName="nombre" name="" id="" placeholder="Nombre">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                          <div class="col-6">
+                              <input type="text" class="form-control" formControlName="correo" name="" id="" placeholder="Correo">
+                          </div>
+                          <div class="col-6">
+                            <input type="password" class="form-control" formControlName="password" name="" id="" placeholder="Contraseña">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                          <div class="col-6">
+                              <input type="text" class="form-control" formControlName="telefono" name="" id="" placeholder="Telefono">
+                          </div>
+                          <div class="col-6">
+                            <select  formControlName="especialidad" class="form-control">
+                                <option value="Medicina General">Medicina General</option>
+                                <option value="Dermatología">Dermatología</option>
+                                <option value="Optometría">Optometría</option>
+                                <option value="Neurocirugía">Neurocirugía</option>
+                                <option value="Psiquiatría">Psiquiatría</option>
+                                <option value="Radiología">Radiología</option>
+                              </select>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                        <div class="col-4">
+                            <select (change)="getProvinces()" formControlName="pais" name="" id="" class="form-control">
+                                <option *ngFor="let country of countrys; let i=index;" value="{{i+1}}">{{ country.pais }}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select (change)="getCitys()" name="" id="" formControlName="departamento" class="form-control">
+                                <option *ngFor="let province of provinces; let i=index;" value="{{i+1}}">{{ province.departamento }}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="" id="" formControlName="ciudad" class="form-control">
+                                <option *ngFor="let city of citys; let i=index" value="{{i+1}}">{{ city.nombreciudad }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                        <div class="col-4">
+                            <textarea class="form-control" placeholder="Direccion" formControlName="direccion"  name="" id="" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="col-4">
+                            <textarea class="form-control" placeholder="Lugar de atencion" formControlName="lugaresAtencion"  name="" id="" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="col-4">
+                            <textarea class="form-control" placeholder="Bibliografia" formControlName="bibliografia"  name="" id="" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                          <div class="col-12 my-2">
+                              <input type="text" class="form-control" formControlName="facebook" name="" id="" placeholder="Facebook">
+                          </div>
+                          <div class="col-12 my-2">
+                              <input type="text" class="form-control" formControlName="instagram" name="" id="" placeholder="Instagram">
+                        </div>
+                        <div class="col-12 my-2">
+                            <input type="text" class="form-control" formControlName="whatsapp" name="" id="" placeholder="Whatsapp">
+                      </div>
+                    </div>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <label>Agrega tus titulos</label>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div *ngFor="let title of titles" class="col-2 default-button mx-2" [style.background-image]="title.safeUrl">   
+                                </div>
+                                <div class="col-2">
+                                    <label for="selectTitles" class="btn btn-light">Agregar titulo</label>
+                                    <input id="selectTitles" style="display: none;" type="file" (change)="selectTitles($event)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                        <button type="button" class="btn btn-danger" style="color: white;" (click)="saveDoctor()">Guardar</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+          </div>
+    </div>
+        <div class="col-6 text-center heigth-background" *ngIf="!clientForm && !medicForm" style="background-image: url('../../assets/img/1b52fd81c2282b432b85dc6a8a01f13d.jpg');">
+            <div class="black-background">
+                <button type="button" class="btn btn-danger rounded-pill" (click)="medicBottom()">Medico de Home Health</button><br>
+                <small class="text-muted" style="color: #fff !important; font-size: 0.89rem;">Registrate como medico para poder ofrecer tus servicios medicos a muchos de los usuarios de Home health.</small>
+            </div>
         </div>
-        <div class="col-12 text-center">
-            <button type="button" class="btn btn-light mx-2 rounded-pill" (click)="clientBottom()">Cliente de Home Health</button>
-            <button type="button" class="btn btn-light mx-2 rounded-pill" (click)="medicBottom()">Medico de Home Health</button>
+        <div *ngIf="clientForm" class="col-6" style="padding: 9.1% 5%; background-image: url('../../assets/img/depositphotos_111543660-stock-illustration-memphis-line-seamless-pattern-colorful.jpg');">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: #dc3545;">Registrarse como cliente</h5>
+                    <div class="col-12 my-3">
+                        <div class="icon-box ml-auto mr-auto" style="position: relative;">
+                            <div class="rounded-circle profilepic-container" *ngIf="picture.safeUrl" [style.background-image]="picture.safeUrl"></div>
+                            <div class="rounded-circle profilepic-container" *ngIf="!picture.safeUrl" style="background-image: url('../../assets/img/unnamed.png');"></div>
+                            <input type="file" (change)="selectPicture($event)">
+                        </div>
+                    </div>
+                    <form [formGroup]="clientFormData">
+                        <div class="col-12 my-2">
+                            <div class="row">
+                                <div class="col-12 mt-2">
+                                    <input type="text" class="form-control" formControlName="idCliente" name="" id="" placeholder="Identificacion">
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <input type="text" class="form-control" formControlName="nombreCliente" name="" id="" placeholder="Nombre">
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <input type="text" class="form-control" formControlName="correoCliente" name="" id="" placeholder="Correo">
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <input type="password" class="form-control" formControlName="passwordCliente" name="" id="" placeholder="Contraseña">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-12">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                            <button type="button" class="btn btn-danger" style="color: white;" (click)="saveClient()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
         </div>
     </div>
 </div>
 
-<div *ngIf="medicForm" class="container-fluid" style="padding: 5% 5%;">
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Registro Medicos</h5>
-          <form [formGroup]="medicFormData">
-            <div class="col-12 my-3">
-                <div class="icon-box ml-auto mr-auto" style="position: relative;">
-                    <div class="rounded-circle profilepic-container" *ngIf="picture.safeUrl" [style.background-image]="picture.safeUrl"></div>
-                    <div class="rounded-circle profilepic-container" *ngIf="!picture.safeUrl" style="background-color: #959595;"></div>
-                    <input type="file" (change)="selectPicture($event)">
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                      <div class="col-6">
-                          <input type="text" class="form-control" formControlName="id" name="" id="" placeholder="Identificacion">
-                      </div>
-                      <div class="col-6">
-                        <input type="text" class="form-control" formControlName="nombre" name="" id="" placeholder="Nombre">
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                      <div class="col-6">
-                          <input type="text" class="form-control" formControlName="correo" name="" id="" placeholder="Correo">
-                      </div>
-                      <div class="col-6">
-                        <input type="password" class="form-control" formControlName="password" name="" id="" placeholder="Contraseña">
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                      <div class="col-6">
-                          <input type="text" class="form-control" formControlName="telefono" name="" id="" placeholder="Telefono">
-                      </div>
-                      <div class="col-6">
-                        <select  formControlName="especialidad" class="form-control">
-                            <option value="Medicina General">Medicina General</option>
-                            <option value="Dermatología">Dermatología</option>
-                            <option value="Optometría">Optometría</option>
-                            <option value="Neurocirugía">Neurocirugía</option>
-                            <option value="Psiquiatría">Psiquiatría</option>
-                            <option value="Radiología">Radiología</option>
-                          </select>
-                      </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                    <div class="col-4">
-                        <select (change)="getProvinces()" formControlName="pais" name="" id="" class="form-control">
-                            <option *ngFor="let country of countrys; let i=index;" value="{{i+1}}">{{ country.pais }}</option>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <select (change)="getCitys()" name="" id="" formControlName="departamento" class="form-control">
-                            <option *ngFor="let province of provinces; let i=index;" value="{{i+1}}">{{ province.departamento }}</option>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <select name="" id="" formControlName="ciudad" class="form-control">
-                            <option *ngFor="let city of citys; let i=index" value="{{i+1}}">{{ city.nombreciudad }}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                    <div class="col-4">
-                        <textarea class="form-control" placeholder="Direccion" formControlName="direccion"  name="" id="" cols="30" rows="5"></textarea>
-                    </div>
-                    <div class="col-4">
-                        <textarea class="form-control" placeholder="Lugar de atencion" formControlName="lugaresAtencion"  name="" id="" cols="30" rows="5"></textarea>
-                    </div>
-                    <div class="col-4">
-                        <textarea class="form-control" placeholder="Bibliografia" formControlName="bibliografia"  name="" id="" cols="30" rows="5"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                      <div class="col-12 my-2">
-                          <input type="text" class="form-control" formControlName="facebook" name="" id="" placeholder="Facebook">
-                      </div>
-                      <div class="col-12 my-2">
-                          <input type="text" class="form-control" formControlName="instagram" name="" id="" placeholder="Instagram">
-                    </div>
-                    <div class="col-12 my-2">
-                        <input type="text" class="form-control" formControlName="whatsapp" name="" id="" placeholder="Whatsapp">
-                  </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="row">
-                    <div class="col-12">
-                        <label>Agrega tus titulos</label>
-                    </div>
-                    <div class="col-12">
-                        <div class="row">
-                            <div *ngFor="let title of titles" class="col-2 default-button mx-2" [style.background-image]="title.safeUrl">   
-                            </div>
-                            <div class="col-2">
-                                <label for="selectTitles" class="btn btn-light">Agregar titulo</label>
-                                <input id="selectTitles" style="display: none;" type="file" (change)="selectTitles($event)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" style="color: white;" (click)="saveDoctor()">Guardar</button>
-                </div>
-            </div>
-          </form>
-        </div>
-      </div>
-</div>
+<!-- <div class="col-12 text-center">
+    <h4 style="color: white;">Bienvenido a Home health, desea registrarse como: </h4>
+</div> -->
 
-<div *ngIf="clientForm" class="container-fluid" style="padding: 9.1% 35%;">
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Registro Cliente</h5>
-            <div class="col-12 my-3">
-                <div class="icon-box ml-auto mr-auto" style="position: relative;">
-                    <div class="rounded-circle profilepic-container" *ngIf="picture.safeUrl" [style.background-image]="picture.safeUrl"></div>
-                    <div class="rounded-circle profilepic-container" *ngIf="!picture.safeUrl" style="background-color: #959595;"></div>
-                    <input type="file" (change)="selectPicture($event)">
-                </div>
-            </div>
-            <form [formGroup]="clientFormData">
-                <div class="col-12 my-2">
-                    <div class="row">
-                        <div class="col-12 mt-2">
-                            <input type="text" class="form-control" formControlName="idCliente" name="" id="" placeholder="Identificacion">
-                        </div>
-                        <div class="col-12 mt-2">
-                            <input type="text" class="form-control" formControlName="nombreCliente" name="" id="" placeholder="Nombre">
-                        </div>
-                        <div class="col-12 mt-2">
-                            <input type="text" class="form-control" formControlName="correoCliente" name="" id="" placeholder="Correo">
-                        </div>
-                        <div class="col-12 mt-2">
-                            <input type="password" class="form-control" formControlName="passwordCliente" name="" id="" placeholder="Contraseña">
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="col-12">
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" style="color: white;" (click)="saveClient()">Guardar</button>
-                </div>
-            </div>
-        </div>
-      </div>
-</div>
