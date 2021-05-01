@@ -19,7 +19,7 @@ export class CalendarioComponent implements OnInit {
     const localstorage = window.localStorage;
     if (localstorage.getItem('uid')) {
       const uid = localstorage.getItem('uid');
-      this.AuthUserServ.getAllCitas(uid).then((Citas) => {
+      this.AuthUserServ.getAllCitas(uid).subscribe((Citas) => {
         console.log(Citas);
       });
     }

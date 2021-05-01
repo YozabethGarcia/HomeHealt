@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Time } from '@angular/common';
 import { map } from 'rxjs/operators';
-import { HOST_ATTR } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -118,19 +118,21 @@ export class AuthUserService {
       }
     });
   }
-
-  getAllCitas(idUser): Promise <any> {
-    return new Promise( ( resolve, rejects ) => {
-      this.firestore.collection('Cita', (ref) => {
+  
+  getAllCitas(idUser: any): Observable<any> {
+    return this.firestore
+      .collection('Cita', (ref) => {
         let query: any = ref;
-        query = query.where( 'IdCliente' , '===', idUser.trim() );
+          query = query.where('IdCliente', '==', idUser);
         return query;
-      }).snapshotChanges().pipe(
-        map( (res) => {
-          const CitasList = [];
+      })
+      .snapshotChanges()
+      .pipe(
+        map((res) => {
+          const citasArray: any = [];
           res.forEach( doc => {
             const cita: any = doc.payload.doc.data();
-            CitasList.push(
+            citasArray.push(
               {
                 idCliente: cita.IdCliente,
                 idDoctor: cita.IdDoctor,
@@ -140,10 +142,9 @@ export class AuthUserService {
               }
             );
           });
-          resolve({ cita: CitasList});
+          return citasArray;
         })
       );
-    });
   }
 }
 
