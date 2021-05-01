@@ -31,6 +31,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegisterUserComponent,
     LoginComponent,
     NavbarComponent,
+    FilterDoctorPipe,
+    CalendarioComponent
   ],
   imports: [
     BrowserModule,
