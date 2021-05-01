@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FilterDoctorPipe } from './pipes/filter-doctor.pipe';
 import { DatePipe } from '@angular/common';
 import { CalendarioComponent } from './calendario/calendario.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -30,7 +31,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegisterUserComponent,
     LoginComponent,
     NavbarComponent,
-    CalendarioComponent
   ],
   imports: [
     BrowserModule,

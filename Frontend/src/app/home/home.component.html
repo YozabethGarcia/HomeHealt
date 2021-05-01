@@ -7,29 +7,28 @@
 </div>
 <div style="margin: 30px 40px 20px 40px; " id="doctores">
     <form class="container-fluid" style="display: inline-flex;">
-        <input type="text" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar">
-        <div class="dropdown" style="margin-left: 15px;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                Medicina General
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                <li><a class="dropdown-item active" href="#">Dermatología</a></li>
-                <li><a class="dropdown-item" href="#">Optometría</a></li>
-                <li><a class="dropdown-item" href="#">Neurocirugía</a></li>
-                <li><a class="dropdown-item" href="#">Psiquiatría</a></li>
-                <li><a class="dropdown-item" href="#">Radiología</a></li>
-            </ul>
+        <input type="text" [(ngModel)]="searchDoctor" [ngModelOptions]="{standalone: true}" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar doctor">
+        <div style="margin-left: 15px;">
+            <select class="select-categories-especial" (change)="filterBySpeciality($event.target.value)">
+                <option value="all">Todas las especialidades</option>
+                <option value="Medicina General">Medicina General</option>
+                <option value="Dermatología">Dermatología</option>
+                <option value="Optometría">Optometría</option>
+                <option value="Neurocirugía">Neurocirugía</option>
+                <option value="Psiquiatría">Psiquiatría</option>
+                <option value="Radiología">Radiología</option>
+            </select>
         </div>
     </form>
 </div>
 <div class="container-fluid" id="especialidad">
-    <div class="row" *ngFor="let especialidad of especialidades;">
+    <div class="row" *ngFor="let especialidad of especialidades | filterDoctor: searchDoctor;">
         <div class="col-12 mt-4" style="color: #E63946; text-align: right;">
             <h2>{{ especialidad.name }}</h2>
             <hr>
         </div>
         <div class="col-12">
-            <div *ngIf="especialidad.doctors.length === 0" class="col-12">
+            <div *ngIf="especialidad?.doctors?.length === 0" class="col-12">
                 <div class="row">
                     <img class="mx-auto" width="80px" src="../../assets/img/person-delete-outline.png" alt="">
                 </div>
@@ -37,10 +36,10 @@
                     <h6 class="mx-auto">Aun no disponemos de profesioanles en esta especialidad.</h6>
                 </div>
             </div>
-            <div *ngIf="especialidad.doctors.length !== 0" class="row g-4" style="margin: 50px 50px 20px 50px;">
-                <span *ngFor="let medico of especialidad.doctors;">
-                    <div class="col">
-                        <div class="card h-100">
+            <div *ngIf="especialidad?.doctors?.length !== 0" class="row" style="margin: 50px 50px 20px 50px;">
+                <span class="col-3" *ngFor="let medico of especialidad.doctors;">
+                    <div>
+                        <div class="card h-100" style="height: 485.5px !important;">
                             <img src="{{ medico.urlFoto }}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">{{ medico.nombre }}</h5>
@@ -60,105 +59,13 @@
     <button type="button" class="btn btn-link" style="color: #E63946; font-weight: bolder;">Mostrar +</button>
     <hr>
 </div>
-<div style="margin: 30px 40px 20px 40px; ">
-    <form class="container-fluid" style="display: inline-flex;">
-        <input type="text" class="form-control buscar" id="BuscarId" aria-describedby="Buscar" placeholder="Buscar">
-        <div class="dropdown" style="margin-left: 15px;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                Especialidades
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                <li><a class="dropdown-item active" href="#">Dermatología</a></li>
-                <li><a class="dropdown-item" href="#">Optometría</a></li>
-                <li><a class="dropdown-item" href="#">Neurocirugía</a></li>
-                <li><a class="dropdown-item" href="#">Psiquiatría</a></li>
-                <li><a class="dropdown-item" href="#">Radiología</a></li>
-            </ul>
-        </div>
-    </form>
-</div>
 <div style="text-align: left; margin: 50px 40px 20px 40px; ">
     <h5 type="button" style="color: #E63946; font-weight: bolder;">Click sobre la imagen para saber mas</h5>
 </div>
 <div class="row row-cols-1 row-cols-md-4 g-4" style="margin: 50px 50px 20px 50px; ">
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 2.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 21.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 22.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 23.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 24.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 25.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 26.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 27.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 28.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 29.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 210.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 211.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 212.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 213.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 214.png" class="card-img-top" alt="...">
-        </button>
-    </div>
-    <div class="col">
-        <button type="button" class="btn">
-            <img src="../assets/img/Icon Especialidades/Slice 215.png" class="card-img-top" alt="...">
+    <div class="col" *ngFor="let speciality of infoEspecialidades">
+        <button type="button" (click)="currentSpeciality( speciality, especialidad )" class="btn">
+            <img src="{{ speciality.img }}" class="card-img-top" alt="...">
         </button>
     </div>
 </div>
@@ -222,6 +129,27 @@
     </div>
 </ng-template>
 
+<ng-template #especialidad let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title title" style="font-size: 1.2rem;">{{ speciality.titulo }}</h5>
+        <button class="close" type="button" aria-label="close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img width="200px" class="mx-auto rounded-circle" src="{{ speciality.img }}" alt="">
+                </div>
+                <div class="col-12">
+                    <label class="title" style="font-size: 0.9rem;">Descripcion:</label><br>
+                    <label class="subtitle" style="font-size: 0.8rem;">{{ speciality.descripcion }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn btn-light rounded-pill" (click)="modal.dismiss()">Cerrar</button>
+      
 <ng-template #FormCita let-modal>
     <div class="modal-header">
         <h6 class="modal-title title">Agendar Cita</h6>
