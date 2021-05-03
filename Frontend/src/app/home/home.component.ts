@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -153,7 +154,8 @@ export class HomeComponent implements OnInit {
   constructor( private authService: AuthUserService,
                private modal: NgbModal,
                private dp: DatePipe,
-               private fb: FormBuilder ) {
+               private fb: FormBuilder,
+               private route: Router ) {
               this.CitaConstr();
   }
 
@@ -278,7 +280,6 @@ export class HomeComponent implements OnInit {
             this.Cita.reset();
             this.modal.dismissAll();
           });
-      
     }
   }
 

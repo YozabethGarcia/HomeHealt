@@ -27,12 +27,11 @@ export class AuthUserService {
           }];
           localStorage.clear();
           localStorage.setItem('token', JSON.stringify(user));
-         });
+          });
 
-         if ( localStorage.getItem('token') ) {
-          const uid = JSON.parse( localStorage.getItem('token') )[0].uid;
-         }
-        
+          if ( localStorage.getItem('token') ) {
+            const uid = JSON.parse( localStorage.getItem('token') )[0].uid;
+          }
         resolve( { uid: add.user.uid });
       }).catch( ( error ) => {
         reject( { error: error } );
@@ -47,9 +46,7 @@ export class AuthUserService {
         whatsapp: user.whatsapp,
         instagram: user.instagram,
       }];
-      
       user['urlFoto'] = picUrl;
-  
       delete user['facebook'];
       delete user['whatsapp'];
       delete user['instagram'];
@@ -86,8 +83,8 @@ export class AuthUserService {
             direccion: data.direccion,
             lugaresAtencion: data.lugaresAtencion,
             contacto: [{
-              facebook: data?.contacto[0]?.facebook, 
-              twitter: data?.contacto[0]?.twitter, 
+              facebook: data?.contacto[0]?.facebook,
+              twitter: data?.contacto[0]?.twitter,
               whatsapp: data?.contacto[0]?.whatsapp,
             }]
           });
@@ -114,7 +111,6 @@ export class AuthUserService {
       }
     });
   }
-  
   getAllCitas(idUser: any): Observable<any> {
     return this.firestore
       .collection('cita', (ref) => {
