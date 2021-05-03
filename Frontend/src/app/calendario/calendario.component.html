@@ -1,2 +1,68 @@
 <app-navbar (scroll)="scrollTo($event)"></app-navbar>
 <full-calendar style="margin:70px;" [options]="calendarOptions"></full-calendar>
+
+<ng-template #detailsAploiment let-modal>
+    <div class="modal-header">
+        <h6 class="modal-title title">Cita con {{ currentDoctor.nombre }}</h6>
+    </div>
+    <div class="modal-body">
+        <div class="col-12 text-center">
+            <img width="100px" class="mx-auto rounded-circle" src="{{ currentDoctor.urlFoto }}" alt="">
+        </div>
+        <div class="col-12 text-center">
+            <label class="title">Doctor:</label>
+            <label class="subtitle">&nbsp; {{ currentDoctor.nombre }} </label>
+        </div>
+        <div class="col-12 text-center">
+            <label class="title">Especialidad:</label>
+            <label class="subtitle">&nbsp; {{ currentDoctor.especialidad }} </label>
+        </div>
+        <div class="col-12 text-center">
+            <label class="title">Direccion:</label>
+            <label class="subtitle">&nbsp; {{ currentDoctor.direccion }} </label>
+        </div>
+        <div class="col-12 text-center">
+            <label class="title">Lugar de atencion:</label>
+            <label class="subtitle">&nbsp; {{ currentDoctor.lugaresAtencion }} </label>
+        </div>        
+        <form [formGroup]="Cita">
+            <div class="form-group">
+                <label for="InputTitulo">Titulo</label>
+                <input type="text" class="form-control" id="InputTitulo" formControlName="titulo" placeholder="" [class.is-invalid]="titulo?.invalid && titulo?.touched">
+            </div>
+            <div class="form-group">
+                <label for="InputFecha">Fecha</label>
+                <input type="date" class="form-control" id="InputFecha" formControlName="fecha" aria-describedby="fechaHelp" placeholder="" [class.is-invalid]="fecha?.invalid && fecha?.touched">
+            </div>
+            <div class="form-group">
+                <label for="InputHora">Hora</label>
+                <input type="time" class="form-control" id="InputHora" formControlName="hora" aria-describedby="HoraHelp" placeholder="" [class.is-invalid]="hora?.invalid && hora?.touched">
+            </div>
+            <div class="form-group">
+                <label for="InputDescripcion">Exponer situacion</label>
+                <textarea class="form-control" id="InputDescripcion" formControlName="descripcion" cols="30" rows="5" [class.is-invalid]="descripcion?.invalid && descripcion?.touched"></textarea>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" formControlName="modo" value="local" type="radio" name="modo" id="local">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Modalidad precencial
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="modo" value="virtual" type="radio" name="modo" id="virtual" checked>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Modalidad virtual
+                    </label>
+                  </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn btn-light" (click)="closeModal()">Cerrar</button>
+            <button type="button" class="btn btn btn-secondary" (click)="eliminarCita( currentAploiment?.uidCita )">Eliminar</button>
+            <button type="button" class="btn btn-danger" (click)="actualizarCita( currentAploiment?.uidCita )">Actualizar cita</button>
+        </div>
+    </div>
+</ng-template>

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthUserService {
+
   constructor( private firestore: AngularFirestore,
                private fireAuth: AngularFireAuth, ) {
     this.idClient();
@@ -96,16 +97,11 @@ export class AuthUserService {
     });
   }
 
-  AgregarCita( idDoctor: string, idCliente: string, fecha: Date , hora: Time): Promise <any> {
+  AgregarCita( cita: any ): Promise <any> {
     return new Promise( (resolve, rejects) => {
-    const data = {
-      IdDoctor: idDoctor,
-      IdCliente : idCliente,
-      Fecha: fecha,
-      Hora: hora
-    };
-    //this.firestore.collection('Cita').add(data);
-    resolve( 'Guardado' );
+    this.firestore.collection( 'cita' ).add( cita ).then( (res) => {
+      resolve( { message: 'Guardado' } );
+      });
     });
   }
 
@@ -121,9 +117,9 @@ export class AuthUserService {
   
   getAllCitas(idUser: any): Observable<any> {
     return this.firestore
-      .collection('Cita', (ref) => {
+      .collection('cita', (ref) => {
         let query: any = ref;
-          query = query.where('IdCliente', '==', idUser);
+          query = query.where('uidCliente', '==', idUser);
         return query;
       })
       .snapshotChanges()
@@ -134,11 +130,14 @@ export class AuthUserService {
             const cita: any = doc.payload.doc.data();
             citasArray.push(
               {
-                idCliente: cita.IdCliente,
-                idDoctor: cita.IdDoctor,
-                fecha: cita.Fecha,
-                hora: cita.Hora,
-                titulo: cita.Titulo
+                uidCita: doc.payload.doc.id,
+                uidCliente: cita.uidCliente,
+                uidDoctor: cita.uidDoctor,
+                fecha: cita.fecha,
+                hora: cita.hora,
+                titulo: cita.titulo,
+                modo: cita.modo,
+                descripcion: cita.descripcion,
               }
             );
           });
@@ -146,6 +145,28 @@ export class AuthUserService {
         })
       );
   }
+
+  getDoctor( uid: string ): Promise<any> {
+    return new Promise( ( resolve, rejects ) => {
+      this.firestore.collection('medicos').doc( uid ).get().subscribe( ( doctor ) => {
+        resolve( { doctor: doctor.data() } );
+      });
+    });
+  }
+
+  updateAploiment( uidAploiment: string, data: any ): Promise<any> {
+    return new Promise( (resolve, reject) => {
+      this.firestore.collection( 'cita' ).doc( uidAploiment ).update( data ).then( ( updated ) => {
+        resolve( { updated: 1 } );
+      });
+    });
+  }
+
+  deleteAploiment( uid ) {
+    return new Promise( (resolve, rejects) => {
+      this.firestore.collection('cita').doc( uid ).delete().then( ( deleted ) => {
+        resolve( { deleted: 1 } );
+      });
+    });
+  }
 }
-
-

@@ -3,6 +3,7 @@ import { AuthUserService } from '../services/auth-user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -144,8 +145,10 @@ export class HomeComponent implements OnInit {
   currDate: string;
 
   localStorage = window.localStorage;
-  IdCliente: string;
+  IdCliente: string = ( localStorage.getItem('uid') ) ? localStorage.getItem('uid') : '';
   IdDoctor: string;
+  modalReference: any;
+  citas: any = [];
 
   constructor( private authService: AuthUserService,
                private modal: NgbModal,
@@ -155,6 +158,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if ( localStorage.getItem('uid') ) {
+      const uid = localStorage.getItem('uid');
+      this.authService.getAllCitas( uid ).subscribe( ( citas ) => {
+        this.citas = citas;
+      });
+    }
+
     this.authService.getAllUser().then( response => {
       response.doctors.forEach( medic => {
         this.especialidades.forEach( ( especialidad, index ) => {
@@ -163,12 +174,15 @@ export class HomeComponent implements OnInit {
           }
         });
       });
-      this.copyEspecialidades = this.especialidades;
-      console.log( this.especialidades );
+      this.copyEspecialidades = this.especialidades
     });
-
     this.currDate = this.dp.transform( new Date(), 'dd/MM/yyyy' );
   }
+
+  get titulo() { return this.Cita.get('titulo'); }
+  get fecha() { return this.Cita.get('fecha'); }
+  get hora() { return this.Cita.get('hora'); }
+  get descripcion() { return this.Cita.get('descripcion'); }
 
   async showMore( modal , id: string) {
     await this.especialidades.forEach( doctors => {
@@ -178,19 +192,12 @@ export class HomeComponent implements OnInit {
         }
       });
     });
-    this.modal.open( modal );
+    this.modalReference = this.modal.open( modal );
   }
 
   async appointment( modal , id: string) {
-    /*await this.especialidades.forEach( doctors => {
-      doctors.doctors.forEach( doctor => {
-        if ( doctor.id === id ) {
-          this.currentDoctor = doctor;
-        }
-      });
-    });
-    console.log( this.currentDoctor );*/
-    this.modal.open( modal );
+    this.modalReference?.close();
+    this.modalReference = this.modal.open( modal );
     this.IdDoctor = id;
   }
 
@@ -226,19 +233,52 @@ export class HomeComponent implements OnInit {
 
   CitaConstr(){
     this.Cita = this.fb.group({
+      titulo: ['', Validators.required],
       fecha: ['', Validators.required],
-      hora: ['', Validators.required]
+      hora: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      modo: ['local', Validators.required]
     });
   }
 
   AgendarCita(){
-    console.log(this.Cita.value);
-    console.log(this.IdDoctor);
-    if (this.Cita.valid){
-       this.authService.AgregarCita( this.IdDoctor,
-                                     this.IdCliente,
-                                     this.Cita.get('fecha').value,
-                                     this.Cita.get('hora').value );
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor...'
+    });
+    Swal.showLoading();
+
+    this.citas.forEach( cita => {
+      if ( this.fecha.value === cita.fecha && this.hora.value === cita.hora ) {
+        Swal.hideLoading();
+        Swal.update({
+          allowOutsideClick: true,
+          icon: 'error',
+          text: 'Ya tiene una cita a esta misma hora',
+          showConfirmButton: true,
+        });
+        return;
+      }
+    });
+
+    if ( this.Cita.valid ) {
+        let cita = this.Cita.value;
+        cita.uidCliente = this.IdCliente;
+        cita.uidDoctor = this.IdDoctor;
+        this.authService
+          .AgregarCita( cita ).then( ( saved ) => {
+            Swal.hideLoading();
+            Swal.update({
+              allowOutsideClick: true,
+              icon: 'success',
+              text: 'Cita agregada',
+              showConfirmButton: true,
+            });
+            this.Cita.reset();
+            this.modal.dismissAll();
+          });
+      
     }
   }
 
