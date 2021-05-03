@@ -3,6 +3,7 @@ import { AuthUserService } from '../services/auth-user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -144,13 +145,15 @@ export class HomeComponent implements OnInit {
   currDate: string;
 
   localStorage = window.localStorage;
-  IdCliente: string;
+
+  IdCliente = localStorage.getItem('uid');
   IdDoctor: string;
 
   constructor( private authService: AuthUserService,
                private modal: NgbModal,
                private dp: DatePipe,
-               private fb: FormBuilder ) {
+               private fb: FormBuilder,
+               private route: Router ) {
               this.CitaConstr();
   }
 
@@ -182,14 +185,7 @@ export class HomeComponent implements OnInit {
   }
 
   async appointment( modal , id: string) {
-    /*await this.especialidades.forEach( doctors => {
-      doctors.doctors.forEach( doctor => {
-        if ( doctor.id === id ) {
-          this.currentDoctor = doctor;
-        }
-      });
-    });
-    console.log( this.currentDoctor );*/
+
     this.modal.open( modal );
     this.IdDoctor = id;
   }
@@ -226,19 +222,20 @@ export class HomeComponent implements OnInit {
 
   CitaConstr(){
     this.Cita = this.fb.group({
+      titulo: ['', Validators.required],
       fecha: ['', Validators.required],
       hora: ['', Validators.required]
     });
   }
 
   AgendarCita(){
-    console.log(this.Cita.value);
-    console.log(this.IdDoctor);
     if (this.Cita.valid){
-       this.authService.AgregarCita( this.IdDoctor,
+      this.authService.AgregarCita( this.IdDoctor,
                                      this.IdCliente,
                                      this.Cita.get('fecha').value,
-                                     this.Cita.get('hora').value );
+                                     this.Cita.get('hora').value,
+                                     this.Cita.get('titulo').value);
+      this.route.navigate(['/calendar']);
     }
   }
 

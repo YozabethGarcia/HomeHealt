@@ -26,12 +26,11 @@ export class AuthUserService {
           }];
           localStorage.clear();
           localStorage.setItem('token', JSON.stringify(user));
-         });
+          });
 
-         if ( localStorage.getItem('token') ) {
-          const uid = JSON.parse( localStorage.getItem('token') )[0].uid;
-         }
-        
+          if ( localStorage.getItem('token') ) {
+            const uid = JSON.parse( localStorage.getItem('token') )[0].uid;
+          }
         resolve( { uid: add.user.uid });
       }).catch( ( error ) => {
         reject( { error: error } );
@@ -46,9 +45,7 @@ export class AuthUserService {
         whatsapp: user.whatsapp,
         instagram: user.instagram,
       }];
-      
       user['urlFoto'] = picUrl;
-  
       delete user['facebook'];
       delete user['whatsapp'];
       delete user['instagram'];
@@ -85,8 +82,8 @@ export class AuthUserService {
             direccion: data.direccion,
             lugaresAtencion: data.lugaresAtencion,
             contacto: [{
-              facebook: data?.contacto[0]?.facebook, 
-              twitter: data?.contacto[0]?.twitter, 
+              facebook: data?.contacto[0]?.facebook,
+              twitter: data?.contacto[0]?.twitter,
               whatsapp: data?.contacto[0]?.whatsapp,
             }]
           });
@@ -96,15 +93,17 @@ export class AuthUserService {
     });
   }
 
-  AgregarCita( idDoctor: string, idCliente: string, fecha: Date , hora: Time): Promise <any> {
+  AgregarCita( idDoctor: string, idCliente: string, fecha: Date, hora: Time, titulo: string): Promise <any> {
     return new Promise( (resolve, rejects) => {
     const data = {
       IdDoctor: idDoctor,
       IdCliente : idCliente,
       Fecha: fecha,
-      Hora: hora
+      Hora: hora,
+      Titulo: titulo
     };
-    //this.firestore.collection('Cita').add(data);
+    console.log(data);
+    this.firestore.collection('Cita').add(data);
     resolve( 'Guardado' );
     });
   }
@@ -118,12 +117,11 @@ export class AuthUserService {
       }
     });
   }
-  
   getAllCitas(idUser: any): Observable<any> {
     return this.firestore
       .collection('Cita', (ref) => {
         let query: any = ref;
-          query = query.where('IdCliente', '==', idUser);
+        query = query.where('IdCliente', '==', idUser);
         return query;
       })
       .snapshotChanges()

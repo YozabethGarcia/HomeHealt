@@ -149,7 +149,9 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn btn-light rounded-pill" (click)="modal.dismiss()">Cerrar</button>
-      
+    </div>
+</ng-template>
+
 <ng-template #FormCita let-modal>
     <div class="modal-header">
         <h6 class="modal-title title">Agendar Cita</h6>
@@ -157,6 +159,10 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="Cita">
+            <div class="form-group">
+                <label for="InputFecha">Descripcion</label>
+                <input type="text" class="form-control" id="InputFecha" formControlName="titulo" aria-describedby="tituloHelp" placeholder="">
+            </div>
             <div class="form-group">
                 <label for="InputFecha">Fecha</label>
                 <input type="date" class="form-control" id="InputFecha" formControlName="fecha" aria-describedby="fechaHelp" placeholder="">
