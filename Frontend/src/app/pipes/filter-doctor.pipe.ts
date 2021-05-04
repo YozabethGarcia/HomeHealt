@@ -11,7 +11,7 @@ export class FilterDoctorPipe implements PipeTransform {
     }
 
     const resultDoctors = [];
-    const found = [];
+    let found = [];
     value.forEach( doctors => {
       for(const doctor of doctors.doctors) {
         if(doctor.nombre.toLowerCase().indexOf(name.toLowerCase()) !== -1){
@@ -19,6 +19,7 @@ export class FilterDoctorPipe implements PipeTransform {
         }
       }
       resultDoctors.push( { doctors: found, name: doctors.name } );
+      found = [];
     });
 
     return resultDoctors;
